@@ -4,8 +4,7 @@
     "description": "Node canvas game",
     "dependencies": {
         "socket.io": "latest",
-        "express": "latest",
-        "jade": "latest"
+        "hapi": "latest"
     },
     "author": "ama291"
 }

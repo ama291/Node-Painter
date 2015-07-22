@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Whiteboard - Node Painter</title>
+        <script src="/client.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha256.js"></script>
+    </head>
+    <body>
+        <div style="text-align: center;">
+            <canvas id="game" style="border:1px solid #000000;" width="750px" height="500px"></canvas>
+            <br />
+            <input id="black" type="button" value="black" />
+            <input id="yellow" type="button" value="yellow" />
+            <input id="blue" type="button" value="blue" />
+            <input id="green" type="button" value="green" />
+            <input id="red" type="button" value="red" />
+            <input id="eraser" type="button" value="eraser" />
+            <br />
+            <input id="export" type="button" value="export" />
+            <input id="clear" type="button" value="clear" />
+        </div>
+    </body>
+</html>

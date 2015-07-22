@@ -1,6 +1,27 @@
-var express = require("express");
-var app = express();
-var port = 8888;
+//hapi server creation
+var Hapi = require('hapi');
+var server = new Hapi.Server();
+server.connection({ port: 8888 });
+
+//server routing
+server.route({
+	method: 'GET',
+	path: '/',
+	handler: function (request, reply) {
+		reply.file('public/client.html');
+	}
+});
+server.route({
+	method: 'GET',
+	path: '/{param*}',
+	handler: {
+		directory: {
+			path: 'public'
+		}
+	}
+});
+
+//whiteboard vars
 var rectarray = [];
 function rect(xpos, ypos, width, height, color) {
 	this.x = xpos;
@@ -11,19 +32,10 @@ function rect(xpos, ypos, width, height, color) {
 }
 var recnum = 0;
 
-app.set('views', __dirname + '/tpl');
-app.set('view engine', "jade");
-app.engine('jade', require('jade').__express);
+//socketio
+var io = require('socket.io')(server.listener);
 
-app.get("/", function(req, res){
-    res.render("page");
-});
-
-app.use(express.static(__dirname + '/public')); 
-
-var io = require('socket.io').listen(app.listen(port));
-
-io.sockets.on('connection', function(socket) {
+io.on('connection', function(socket) {
 	console.log("Client " + socket.id + " connected.");
 	socket.emit('array', rectarray);
 	socket.on('mouseupdate', function (data) {
@@ -49,4 +61,7 @@ io.sockets.on('connection', function(socket) {
 	});
 });
 
-console.log("Server started on port " + port);
+//start hapi server
+server.start(function () {
+	console.log('Server running at:', server.info.uri);
+});

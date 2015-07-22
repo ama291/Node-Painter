@@ -21,7 +21,7 @@ server.route({
 	}
 });
 
-//whiteboard vars
+//painter vars
 var rectarray = [];
 function rect(xpos, ypos, width, height, color) {
 	this.x = xpos;
@@ -35,7 +35,8 @@ var recnum = 0;
 //socketio
 var io = require('socket.io')(server.listener);
 
-io.on('connection', function(socket) {
+//socket listeners
+io.sockets.on('connection', function(socket) {
 	console.log("Client " + socket.id + " connected.");
 	socket.emit('array', rectarray);
 	socket.on('mouseupdate', function (data) {
@@ -49,15 +50,10 @@ io.on('connection', function(socket) {
 		io.sockets.emit('array', rectarray);
 	});
 	socket.on('auth', function (data) {
-		if (data == "36ae704936b705888b40723ac7ff11b3c0181b83f86ec2a0efa91a14d601082c") {
-			rectarray = [];
-			recnum = 0;
-			socket.emit('authresponse', true);
+		rectarray = [];
+		recnum = 0;
+		socket.emit('authresponse', true);
 			io.sockets.emit('array', rectarray);
-		}
-		else {
-			socket.emit('authresponse', false);
-		}
 	});
 });
 
